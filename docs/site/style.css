@@ -42,6 +42,25 @@ a {
   padding: 0.5rem;
 }
 
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0 1rem;
+}
+
+header .lead {
+  flex-basis: 100%;
+}
+
+.repo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-height: 1.5rem;
+}
+
 figure {
   margin: 0;
 }
