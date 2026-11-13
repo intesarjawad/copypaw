@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use Copypaw in your work, please cite it as below."
+type: software
+title: "Copypaw"
+abstract: >-
+  Copy a real pet's motion and paste it onto a drawing. Copypaw reads a
+  side-view pet clip with CPU-only two-dimensional pose estimation and
+  retargets the motion onto a drawing's strokes.
+version: 0.1.0
+license: MIT
+repository-code: "https://github.com/intesarjawad/copypaw"
+authors:
+  - family-names: Jawad
+    given-names: Intesar
+keywords:
+  - animation
+  - pose estimation
+  - motion transfer
+  - children's drawings

@@ -1,0 +1,112 @@
+[project]
+name = "copypaw"
+version = "0.1.0"
+description = "Copy a real pet's motion and paste it onto a drawing."
+readme = "README.md"
+authors = [{ name = "Copypaw contributors" }]
+license = "MIT"
+license-files = ["LICENSE", "NOTICE"]
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "glfw==2.11.0",
+    "imageio==2.38.1",
+    "imageio-ffmpeg==0.8.1",
+    "numpy==2.5.4",
+    "onnxruntime==1.31.1",
+    "opencv-python-headless==5.0.0.93",
+    "pillow==13.0.0",
+    "PyOpenGL==3.1.10",
+    "PyYAML==6.0.3",
+    "scikit-image==0.26.0",
+    "scikit-learn==1.9.1",
+    "scipy==1.18.1",
+    "shapely==2.2.0",
+    "tqdm==4.70.1",
+    "typer==0.29.0",
+]
+
+[project.scripts]
+copypaw = "copypaw.cli:main"
+
+[dependency-groups]
+dev = [
+    "axe-playwright-python==0.1.8",
+    "hypothesis==6.170.15",
+    "playwright==1.65.0",
+    "pre-commit==4.7.0",
+    "pyright==1.1.414",
+    "pytest==9.2.0",
+    "pytest-cov==7.1.0",
+    "ruff==0.17.4",
+    "scipy-stubs==1.18.1.1",
+    "types-PyYAML==6.0.12.20261103",
+]
+
+[build-system]
+requires = ["hatchling==1.33.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = ["/copypaw/**"]
+artifacts = ["copypaw/app/static/**"]
+
+[tool.hatch.build.hooks.custom]
+path = "scripts/hatch_build.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["copypaw"]
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    "/web/node_modules/**",
+    "/web/test-results/**",
+    "/web/playwright-report/**",
+    "/web/screenshots/**",
+]
+include = [
+    "/copypaw/**",
+    "/tests/**",
+    "/typings/**",
+    "/pyproject.toml",
+    "/uv.lock",
+    "/.python-version",
+    "/README.md",
+    "/LICENSE",
+    "/NOTICE",
+    "/Makefile",
+    "/web/**",
+    "/scripts/**",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["copypaw/vendor"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "C4", "SIM", "PT", "RET", "ARG", "PL", "RUF", "D", "NPY", "PERF", "S", "TID"]
+ignore = ["D100", "D104", "D203", "D213", "PLR0913", "S101"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D", "PLR2004"]
+"copypaw/animate/**" = ["TID251"]
+"scripts/**" = ["D"]
+# The parity fixture reads the mesh the engine built.
+"scripts/export_web_parity.py" = ["D", "TID251"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"copypaw.vendor.animated_drawings".msg = "Import the engine only inside copypaw/animate/."
+
+[tool.pyright]
+pythonVersion = "3.12"
+typeCheckingMode = "strict"
+exclude = ["copypaw/vendor", ".venv"]
+stubPath = "typings"
+reportMissingTypeStubs = false
+
+[tool.pytest.ini_options]
+addopts = "-q --strict-markers --cov=copypaw --cov-report=term-missing"
+markers = ["render: needs OpenGL (GLFW or OSMesa)", "slow: downloads models or runs inference", "ui: drives the local app with Playwright"]

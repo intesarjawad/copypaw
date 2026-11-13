@@ -1,0 +1,14 @@
+{
+  "name": "Copypaw",
+  "build": { "dockerfile": "Dockerfile" },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "26" }
+  },
+  "hostRequirements": { "cpus": 2 },
+  "containerEnv": { "PYOPENGL_PLATFORM": "osmesa" },
+  "forwardPorts": [8765],
+  "portsAttributes": {
+    "8765": { "label": "Copypaw app" }
+  },
+  "postCreateCommand": "uv sync --all-groups --locked && npm ci --prefix web && npm run build --prefix web && uv run copypaw models fetch --mode lightweight"
+}

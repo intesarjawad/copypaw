@@ -1,0 +1,114 @@
+Copypaw
+Copyright (c) 2026 Intesar Jawad
+Licensed under the MIT License. See LICENSE.
+
+AnimatedDrawings
+Source: https://github.com/facebookresearch/AnimatedDrawings
+Revision: b859684857519c7424da51a0b0862fbd1fd258f4
+Copyright (c) Meta Platforms, Inc. and affiliates.
+Licensed under the MIT License. The complete upstream licence is preserved in
+copypaw/vendor/animated_drawings/LICENSE and tests/fixtures/upstream/LICENSE.
+Upstream copyright and licence headers are retained in the source files.
+
+Included source: animated_drawings/, including mvc_base_cfg.yaml and shaders.
+Included example fixtures: characters/char6/, bvh/fair1/zombie.bvh,
+config/motion/zombie.yaml, config/retarget/four_legs.yaml and
+config/mvc/four_legs_example.yaml, under tests/fixtures/upstream/.
+The fixtures are copied without modification, retaining their upstream paths
+relative to examples/ and any embedded notices.
+
+Local modifications:
+- Rewrite absolute animated_drawings imports to
+  copypaw.vendor.animated_drawings throughout the Python package.
+- Replace pkg_resources.resource_filename with importlib.resources.files in
+  config.py, utils.py, view/window_view.py and view/mesa_view.py. Resolve the
+  base configuration and utility paths from the package root, and shaders from
+  view/shaders/ within that package. Preserve utility path search order.
+- Replace mutable channel-list defaults in model/bvh.py's BVH_Joint
+  constructor and nested frame-channel collector with None, allocating a
+  fresh list when omitted.
+- Replace the removed NumPy bool8 alias with bool_ in model/arap.py's
+  pin-mask declarations, return annotation and array construction, and in
+  model/retargeter.py's joint-mask construction.
+- Extract the single squared-length product with item() before math.sqrt in
+  model/quaternions.py's rotate_between_vectors; NumPy 2 rejects implicit
+  conversion of a one-dimensional array to a Python scalar.
+- Select the scalar triangle index at [0, 0] before int() in model/arap.py's
+  barycentric-coordinate lookup for NumPy 2 compatibility.
+- Add an optional control_point_filter callback to AnimatedDrawing.update. When
+  set, it receives the BVH frame index and world-space joint positions before
+  the ARAP solve, so contact-aware retargeting can adjust paws without changing
+  the vendored solver.
+- In model/animated_drawing.py's mesh generation, space interior vertices by
+  the character's area (about 1000 of them) inside the outline inset by half
+  that spacing, and take outline vertices from its corners plus samples at the
+  same spacing, dropping any closer than half of it. Upstream used a 40 by 40
+  grid over the image and every outline point within a quarter pixel.
+- Generate mipmaps for the character texture and sample it with trilinear
+  minification, linear magnification and edge clamping.
+- When assigning triangles to joints, give a triangle whose centroid lies
+  outside the mask the joint of the nearest mask pixel. Upstream gave it the
+  last joint in the skeleton.
+
+rtmlib
+Source: https://github.com/Tau-J/rtmlib
+Version: 0.0.16, from the PyPI wheel rtmlib-0.0.16-py3-none-any.whl
+Wheel SHA-256: ba932b25f7d264d7ec4837545c5e7c392001f48b53e22e514cb1497882389eaa
+Copyright 2018-2020 Open-MMLab.
+Licensed under the Apache License, Version 2.0. The complete upstream licence
+is preserved in copypaw/vendor/rtmlib_onnx/LICENSE, including its copyright notice.
+The YOLOX source retains its DWPose attribution and the DARK decoder retains
+its easy_ViTPose attribution and paper references.
+
+Included source from rtmlib/tools/: base.py (ONNX inference path),
+object_detection/yolox.py, object_detection/post_processings.py (multiclass_nms
+and nms), pose_estimation/vitpose.py, pose_estimation/pre_processings.py
+(bbox_xyxy2cs, top_down_affine and their affine-transform dependencies), and
+pose_estimation/post_processings.py (post_dark_udp).
+
+Local modifications:
+- Flatten the subset into copypaw/vendor/rtmlib_onnx/ and rewrite relative
+  imports. Rename the processing modules to detection_postprocess.py,
+  pose_preprocess.py and pose_postprocess.py. Add a package initializer.
+- Restrict BaseTool to ONNX Runtime's CPUExecutionProvider. Remove backend
+  selection, accelerator probing, downloads, console output and the abstract
+  call interface. Use the model's fixed spatial dimensions when input size is
+  omitted, supporting both the 416x416 and 640x640 YOLOX graphs. Request all
+  inference outputs directly, retaining contiguous float32 NCHW conversion.
+- Restrict YOLOX to raw 80-class output and always return boxes with class IDs.
+  Remove human mode, the deprecated mode alias and the embedded-NMS branch
+  that cannot provide class IDs. Validate output shape and return float32
+  boxes (N, 4) and integer classes (N,), including empty results. Retain the
+  upstream decoding, score threshold, class-aware NMS and BGR preprocessing.
+- Remove ViTPose's human OpenPose conversion, backend arguments and mutable
+  bbox default. Preserve RGB normalization, affine crops and DARK decoding.
+- Remove the tensor-to-NumPy conversion in post_dark_udp; ONNX Runtime
+  already returns NumPy arrays. Exclude unrelated pose decoders.
+- Add adjacent base.pyi, yolox.pyi and vitpose.pyi declarations for the
+  inference interfaces used by the capture code and tests.
+- Add Apache-2.0 licence pointers and modification notices to the subset.
+  Format the retained source and correct the YOLOX output annotation.
+
+Self-test clip (copypaw/selftest/dog_walk.mp4)
+Title: A representative side view video clip showing limb and joint angle in a
+normal dog (Movie S3)
+Authors: J. Shin, B. Greer, C. Hakim, Z. Zhou, Y. Chung, Y. Duan, Z. He and D. Duan
+Source: https://commons.wikimedia.org/wiki/File:Quantitative-Phenotyping-of-Duchenne-Muscular-Dystrophy-Dogs-by-Comprehensive-Gait-Analysis-and-pone.0059875.s003.ogv
+Licensed under Creative Commons Attribution 2.5 Generic
+(https://creativecommons.org/licenses/by/2.5/).
+Changes: trimmed to 0.000-5.000 seconds, re-encoded as H.264, audio and source
+metadata removed. The credit also ships as copypaw/selftest/ATTRIBUTION.txt.
+The web page's light table (web/public/light-table/) shows frames of this clip,
+greyscaled and halved in size, written by scripts/build_light_table.py; the page
+credits the clip beside it.
+
+Typefaces in the web page (web/src/fonts/)
+BBH Bogle, Copyright 2025 The BBH Project Authors (https://github.com/Studio-DRAMA/BBH).
+Mozilla Headline, Copyright 2025 The Mozilla Headline Project Authors
+(https://github.com/mozilla/mozilla-headline-type).
+Both are licensed under the SIL Open Font License 1.1 (https://openfontlicense.org)
+and were taken unmodified, as the Latin subsets Google Fonts serves. The licence
+texts ship with the page as web/public/licences/OFL-BBH-Bogle.txt and
+web/public/licences/OFL-Mozilla-Headline.txt.
+
+Dependencies retain their own copyright notices and licences.

@@ -1,0 +1,2 @@
+dog_walk.mp4: "A representative side view video clip showing limb and joint angle in a normal dog (Movie S3)" by J. Shin, B. Greer, C. Hakim, Z. Zhou, Y. Chung, Y. Duan, Z. He and D. Duan, licensed CC BY 2.5 (https://creativecommons.org/licenses/by/2.5/), source: https://commons.wikimedia.org/wiki/File:Quantitative-Phenotyping-of-Duchenne-Muscular-Dystrophy-Dogs-by-Comprehensive-Gait-Analysis-and-pone.0059875.s003.ogv. Trimmed to 0.000-5.000 seconds, re-encoded as H.264, audio and source metadata removed.
+dragon.png: drawn for this project and released under the MIT licence.

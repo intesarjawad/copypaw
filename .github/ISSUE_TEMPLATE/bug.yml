@@ -1,0 +1,23 @@
+name: Bug report
+description: Report a reproducible problem. Use private reporting for vulnerabilities.
+body:
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include commands and inputs with personal data removed.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Include the package version, Python version, and operating system.
+    validations:
+      required: true

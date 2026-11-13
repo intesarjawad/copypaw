@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Copypaw: copy a real pet's motion onto a drawing</title>
+    <meta
+      name="description"
+      content="Film a pet from the side, then watch a drawing move the way it does."
+    />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="style.css" />
+    <script src="grid.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#install">Skip to the install command</a>
+    <header>
+      <h1>Copypaw</h1>
+      <p class="lead">Copy a real pet's motion and paste it onto a drawing.</p>
+    </header>
+    <main>
+      <section aria-labelledby="demo-heading">
+        <h2 id="demo-heading">See it move</h2>
+        <figure>
+          <video
+            id="clip"
+            controls
+            loop
+            muted
+            playsinline
+            preload="none"
+            poster="clips/hero.jpg"
+            aria-label="A real pet on the left and a drawing moving the same way on the right, with the footfall strip below"
+          >
+            <source src="clips/hero.mp4" type="video/mp4" />
+            <track kind="captions" src="silent.vtt" srclang="en" label="No audio" />
+          </video>
+          <figcaption id="caption" aria-live="polite">
+            A real pet on the left, a drawing moving the same way on the right. The strip below
+            marks which paws are on the ground, one row per paw.
+          </figcaption>
+        </figure>
+        <form id="pickers" hidden>
+          <fieldset>
+            <legend>Pick a clip</legend>
+            <div class="field">
+              <label for="drawing">Drawing</label>
+              <select id="drawing"></select>
+            </div>
+            <div class="field">
+              <label for="motion">Motion</label>
+              <select id="motion"></select>
+            </div>
+          </fieldset>
+        </form>
+      </section>
+
+      <section id="install" aria-labelledby="install-heading">
+        <h2 id="install-heading">Install</h2>
+        <pre id="command"><code>uv tool install git+https://github.com/intesarjawad/copypaw</code></pre>
+        <p>
+          <button type="button" id="copy" hidden>Copy the install command</button>
+          <span id="copy-status" role="status"></span>
+        </p>
+        <p>Then run <code>copypaw app</code> to open the app in your browser.</p>
+      </section>
+
+      <section aria-labelledby="evaluation-heading">
+        <h2 id="evaluation-heading">How well does it match?</h2>
+        <p>
+          Each drawing's paws are compared with the pet's own clip: whether they land on the same
+          beats, and whether paw height rises and falls in step. The timing words under a clip
+          compare that match with the same drawing animated by other pets' motion. A "fair" or
+          "strong" match beats 95 percent of those mismatched pairs, and "strong" also needs a
+          high correlation. "Not measured" means the gallery has not been calibrated yet.
+        </p>
+        <p>
+          Pose accuracy will be measured on the APT-36K animal pose set. The
+          <a href="https://github.com/intesarjawad/copypaw/blob/main/docs/evaluation.md"
+            >evaluation page</a
+          >
+          records what has been run so far, so this page does not repeat it.
+        </p>
+      </section>
+
+      <section aria-labelledby="privacy-heading">
+        <h2 id="privacy-heading">Privacy</h2>
+        <p>
+          Copypaw runs on your own computer. Your drawing and your pet's clip are processed there
+          and are not uploaded. The only download is the pose models, on the first run. This site
+          sets no cookies, runs no analytics and loads no third-party script.
+        </p>
+        <p>
+          Your drawing and your clip stay yours, and so do the animations you make from them.<sup
+            ><a href="#licence-note" id="licence-ref">1</a></sup
+          >
+        </p>
+      </section>
+    </main>
+    <footer>
+      <p id="licence-note">
+        <a href="#licence-ref">1</a>. The MIT licence covers Copypaw's code only. The sample
+        drawings and the gallery clips are credited, with their own licences, in
+        <a href="https://github.com/intesarjawad/copypaw/blob/main/samples/ATTRIBUTION.md"
+          >samples/ATTRIBUTION.md</a
+        >
+        and
+        <a href="https://github.com/intesarjawad/copypaw/blob/main/motions/ATTRIBUTION.md"
+          >motions/ATTRIBUTION.md</a
+        >.
+      </p>
+      <nav aria-label="Project links">
+        <ul>
+          <li><a href="https://github.com/intesarjawad/copypaw">Source</a></li>
+          <li>
+            <a href="https://github.com/intesarjawad/copypaw/blob/main/docs/call-for-clips.md"
+              >Send a clip for the gallery</a
+            >
+          </li>
+          <li>
+            <a href="https://github.com/intesarjawad/copypaw/issues/new/choose">Report a problem</a>
+          </li>
+          <li>
+            <a href="https://github.com/intesarjawad/copypaw/blob/main/LICENSE">Licence</a>
+          </li>
+        </ul>
+      </nav>
+      <p id="built"></p>
+    </footer>
+  </body>
+</html>

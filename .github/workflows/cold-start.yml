@@ -1,0 +1,57 @@
+name: cold-start
+# Browser times run after every Pages deploy; the install-and-run times run after every
+# release. Hosted runners are not the reference machine, so the local jobs assert
+# completion and print times, not budgets, and the browser job skips the budget on
+# a software WebGL renderer.
+on:
+  workflow_run:
+    workflows: [pages]
+    types: [completed]
+  release:
+    types: [published]
+  workflow_dispatch:
+permissions: { contents: read, pages: read }
+env:
+  UV_PYTHON: "3.12"
+jobs:
+  browser:
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with: { version: "0.13.7" }
+      - run: uv python install 3.12 && uv sync --all-groups --locked
+      - run: uv run playwright install --with-deps chromium webkit firefox
+      # The Pages configuration knows the custom domain; a fork without one is served from github.io.
+      - id: site
+        run: echo "url=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .html_url)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - run: xvfb-run -a uv run python scripts/cold_start.py --browser "${{ steps.site.outputs.url }}"
+        env:
+          FIREFOX_HEADED: "1"
+  local-linux:
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      PYOPENGL_PLATFORM: osmesa
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with: { version: "0.13.7" }
+      - run: sudo apt-get update && sudo apt-get install -y libosmesa6 libosmesa6-dev libglu1-mesa
+      - run: uv python install 3.12 && uv sync --all-groups --locked
+      - run: uv run playwright install --with-deps chromium
+      - run: uv run python scripts/cold_start.py --local --from-pypi --no-budget
+  local-macos:
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with: { version: "0.13.7" }
+      - run: uv python install 3.12 && uv sync --all-groups --locked
+      - run: uv run playwright install chromium
+      # GitHub's macOS runners have no reliable OpenGL context, so the render steps are skipped.
+      - run: uv run python scripts/cold_start.py --local --from-pypi --no-render --no-budget

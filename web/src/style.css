@@ -1,0 +1,1280 @@
+@font-face {
+  font-family: "BBH Bogle";
+  src: url("./fonts/bbh-bogle.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Mozilla Headline";
+  src: url("./fonts/mozilla-headline.woff2") format("woff2");
+  font-weight: 200 700;
+  font-display: swap;
+}
+
+:root {
+  color-scheme: dark;
+  --room: #141517;
+  --room-ink: #ece7de;
+  --room-soft: #b3aca1;
+  --ink: #121517;
+  --ink-soft: #3b4347;
+  --paper: #f4f1ea;
+  --glass: #f6fafb;
+  --glass-edge: #dcdfd9;
+  --steel: #2c3236;
+  --steel-edge: #6d777c;
+  --blue: #2a72b2;
+  --graphite: #3a3f43;
+  --grease: #961a10;
+  --focus: #e0583a;
+  --rule: #d6cfc2;
+  --rule-strong: #a99f8f;
+  --display: "BBH Bogle", "Arial Narrow", sans-serif;
+  --text: "Mozilla Headline", system-ui, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  font-family: var(--text);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--room-ink);
+  background: var(--room);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.18em;
+}
+
+/* Every button is a plate screwed to the table's rail, as the lamp switch and the reel are. */
+button,
+label[for$="-input"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid #0b0c0d;
+  border-radius: 5px;
+  background: linear-gradient(#3a4146, #24292c);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.14),
+    0 2px 3px rgb(0 0 0 / 0.4);
+  color: #e4dfd5;
+  font: 400 15px/1 var(--display);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+
+button:active:not(:disabled),
+label[for$="-input"]:active {
+  transform: translateY(1px);
+}
+
+@media (hover: hover) {
+  button:hover:not(:disabled),
+  label[for$="-input"]:hover {
+    background: linear-gradient(#434b50, #2a2f33);
+  }
+}
+
+button:disabled {
+  background: linear-gradient(#4a5156, #33393d);
+  color: #d9d4ca;
+  cursor: not-allowed;
+}
+
+/* The light table, in a dark room */
+
+.table {
+  /* The clip is 480 by 272; the table is as wide as fits the window's height, rail and
+     paper margins included, and the exposure sheet lies beside it. */
+  --sheet-w: clamp(176px, 14vw, 208px);
+  --desk-w: max(
+    560px,
+    min(100vw - 96px - var(--sheet-w) - 28px, (100svh - 500px) * 1.7647 + 124px)
+  );
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  min-height: max(100svh, 700px);
+  padding: 36px 48px 24px;
+  overflow: clip;
+  background: var(--room);
+  color: var(--room-ink);
+}
+
+.glass {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out);
+}
+
+.table.lit .glass {
+  opacity: 1;
+}
+
+.table.lit .still {
+  display: none;
+}
+
+.intro,
+.bench,
+.under {
+  position: relative;
+  width: calc(var(--desk-w) + 28px + var(--sheet-w));
+}
+
+.intro > div + div {
+  max-width: 74ch;
+  margin-top: 12px;
+}
+
+.mark {
+  margin: 0;
+  font: 400 18px/1 var(--display);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 14px 0 0;
+  font: 640 clamp(30px, 2.7vw, 40px) / 1.04 var(--text);
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+
+.lede,
+.pointer {
+  margin: 0;
+  font-size: 15.5px;
+  color: var(--room-soft);
+}
+
+.pointer {
+  margin-top: 8px;
+}
+
+.pointer a {
+  color: var(--room-ink);
+  text-decoration-color: var(--rule-strong);
+  text-decoration-thickness: 1px;
+}
+
+.bench {
+  display: flex;
+  align-items: stretch;
+  gap: 28px;
+}
+
+.desk {
+  position: relative;
+  flex: none;
+  width: var(--desk-w);
+  padding: 58px 42px 98px;
+}
+
+.still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.paper {
+  position: relative;
+  padding: 34px 20px 22px;
+}
+
+.projection {
+  position: relative;
+  width: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+}
+
+.projection:active {
+  cursor: grabbing;
+}
+
+.projection:focus-visible {
+  outline-offset: 6px;
+}
+
+/* The switch and the push button are screwed to the table's deep front rail; 56px of apron
+   below the glass, as table.ts tells the shader. */
+.rail-controls {
+  position: absolute;
+  bottom: 14px;
+  left: 34px;
+  display: flex;
+  gap: 10px;
+}
+
+.table .lamp,
+.table .reel {
+  padding: 0 14px 0 6px;
+}
+
+.plate {
+  display: grid;
+  width: 18px;
+  height: 26px;
+  padding: 2px;
+  border-radius: 3px;
+  background: #101213;
+  box-shadow: inset 0 1px 2px rgb(0 0 0 / 0.8);
+}
+
+/* A rocker: the lit half is pressed in, the other half stands proud and catches the light. */
+.rocker {
+  border-radius: 2px;
+  background: linear-gradient(#e9e4da 0 46%, #8f897f 54% 100%);
+  box-shadow: 0 -1px 0 rgb(255 255 255 / 0.3);
+  transition: background 120ms var(--ease-out);
+}
+
+.lamp[aria-pressed="false"] .rocker {
+  background: linear-gradient(#57524b 0 46%, #cfc8bc 54% 100%);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.2);
+}
+
+.lamp[aria-pressed="true"] .plate {
+  box-shadow:
+    inset 0 1px 2px rgb(0 0 0 / 0.8),
+    0 0 6px rgb(190 225 245 / 0.35);
+}
+
+.cap {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #c3392b, #7c140c 70%);
+  box-shadow:
+    0 0 0 2px #121415,
+    0 0 0 3px #4d555a,
+    0 1px 2px 3px rgb(0 0 0 / 0.45);
+  transition: transform 90ms var(--ease-out);
+}
+
+.reel:active .cap {
+  transform: scale(0.92);
+}
+
+.under {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 20px;
+  justify-content: flex-end;
+  padding: 10px calc(var(--sheet-w) + 28px) 0 0;
+  font-size: 13.5px;
+  color: var(--room-soft);
+}
+
+.counter {
+  font: 600 13.5px/1 var(--text);
+  font-variant-numeric: tabular-nums;
+  color: var(--room-ink);
+}
+
+.hint {
+  margin: 0;
+}
+
+.run {
+  width: min(1176px, 100% - 64px);
+  margin: 0 auto;
+  padding: 72px 0 0;
+}
+
+.run h2 + p {
+  margin: 10px 0 0;
+  color: var(--room-soft);
+}
+
+.commands {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: command;
+}
+
+.commands li {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 9px 0;
+  border-bottom: 1px solid #2c3034;
+  counter-increment: command;
+}
+
+.commands li::before {
+  content: counter(command);
+  flex: none;
+  width: 1.2em;
+  font: 400 20px/1 var(--display);
+  color: var(--room-soft);
+}
+
+.commands code {
+  font: 15px/1.5 var(--mono);
+  overflow-wrap: anywhere;
+}
+
+.run > p:not(:first-of-type) {
+  margin: 14px 0 0;
+  color: var(--room-soft);
+}
+
+.footnote {
+  max-width: 68ch;
+  margin-top: 40px;
+  font-size: 13.5px;
+  color: var(--room-soft);
+}
+
+.footnote p {
+  margin: 0;
+}
+
+.footnote p + p {
+  margin-top: 4px;
+}
+
+/* The exposure sheet: ruled paper beside the table, marked in pencil */
+
+.xsheet {
+  position: relative;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  width: var(--sheet-w);
+  padding: 10px 10px 8px;
+  box-shadow: 2px 6px 14px rgb(0 0 0 / 0.45);
+  rotate: 0.6deg;
+  background: var(--paper);
+  /* Fully opaque, it lets Chrome skip drawing the canvas under it, and the skip runs 8 px too
+     high and leaves a dark band; a hair of translucency keeps the canvas drawn. */
+  opacity: 0.995;
+  color: var(--ink);
+  font-size: 12.5px;
+}
+
+/* With the table off the sheet falls into the room's dark, and the desk lamp's beam, carrying on
+   past the table, warms its near edge. Dimmed no further than keeps its pencil readable. */
+.xsheet::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgb(255 190 120 / 0.14), rgb(12 10 8 / 0.38) 45%);
+  opacity: 0;
+  pointer-events: none;
+  content: "";
+  transition: opacity 500ms var(--ease-out);
+}
+
+.table[data-lamp="off"] .xsheet::after {
+  opacity: 1;
+}
+
+/* On a narrow sheet the frame count wraps under the scene rather than run into the drawing's name. */
+.xsheet-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 10px;
+  margin: 0 0 8px;
+}
+
+.xsheet-head dt {
+  font: 600 12px/1.2 var(--text);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.xsheet-head dd {
+  margin: 2px 0 0;
+  font: 400 15px/1 var(--display);
+  text-transform: uppercase;
+}
+
+.xsheet table {
+  flex: 1 1 0;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.xsheet thead th {
+  padding: 3px 0;
+  border-bottom: 1px solid var(--rule-strong);
+  font: 600 12px/1 var(--text);
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.xsheet thead tr:first-child th {
+  font: 400 13px/1 var(--display);
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.xsheet th.fr {
+  width: 24px;
+  vertical-align: bottom;
+}
+
+.xsheet abbr {
+  text-decoration: none;
+}
+
+.xsheet tbody tr {
+  cursor: pointer;
+}
+
+.xsheet tbody th {
+  padding: 0 4px 0 0;
+  font: 400 12.5px/0 var(--display);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  color: transparent;
+}
+
+.xsheet tbody tr.marked th {
+  color: var(--ink-soft);
+}
+
+.xsheet td {
+  --ruled: #e8e2d6;
+  position: relative;
+  padding: 0;
+  border-bottom: 1px solid var(--ruled);
+  font-size: 1px;
+  line-height: 0;
+  color: transparent;
+}
+
+.xsheet tbody tr.marked > td {
+  --ruled: var(--rule);
+}
+
+.xsheet td.first {
+  border-left: 1px solid var(--rule-strong);
+}
+
+/* A planted paw is a pencil line held down the column, drawn over the ruling, its grain from a
+   different stretch of the same stroke in each row; a tick marks the frame it lands. */
+.xsheet td.on {
+  --mark: var(--graphite);
+}
+
+.xsheet td.dog.on {
+  --mark: var(--blue);
+}
+
+.xsheet td.on::before {
+  position: absolute;
+  inset: 0 calc(50% - 3px) -1px;
+  background: var(--mark);
+  mask: url("./lightTable/pencil.svg") 0 calc(var(--row, 0) * -9px) / 6px 480px repeat-y;
+  content: "";
+}
+
+.xsheet td.lands::after {
+  position: absolute;
+  top: 1px;
+  left: 18%;
+  width: 64%;
+  height: 2px;
+  background: var(--mark);
+  mask: url("./lightTable/pencil.svg") 0 calc(var(--row, 0) * -9px) / 100% 480px;
+  content: "";
+}
+
+.xsheet.live tbody tr.now ~ tr > td::before,
+.xsheet.live tbody tr.now ~ tr > td::after {
+  display: none;
+}
+
+/* One grease-pencil line under the frame on the glass. */
+.xsheet tbody tr.now > * {
+  box-shadow: inset 0 -2px 0 var(--grease);
+}
+
+/* The frame on the glass keeps its number; ruled numbers too close to it give way. */
+.xsheet tbody tr.marked:has(+ tr.now) th,
+.xsheet tbody tr.marked:has(+ tr + tr.now) th,
+.xsheet tbody tr.now + tr.marked th,
+.xsheet tbody tr.now + tr + tr.marked th {
+  color: transparent;
+}
+
+/* The current frame's number sits just above its grease line, never struck through. */
+.xsheet tbody tr.now th {
+  translate: 0 -6px;
+  color: var(--grease);
+}
+
+.xsheet-key {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+
+/* The tool: the same table, the drawing laid on lit glass */
+
+#trace {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 88px 32px 40px;
+}
+
+.trace-head {
+  max-width: 44rem;
+  margin-bottom: 28px;
+}
+
+h2 {
+  margin: 0;
+  font: 640 clamp(26px, 2.4vw, 34px) / 1.08 var(--text);
+}
+
+.trace-head > p {
+  margin: 10px 0 0;
+  color: var(--room-soft);
+}
+
+[role="alert"]:not(:empty) {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-left: 4px solid var(--grease);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15.5px;
+}
+
+[role="alert"] p {
+  margin: 0;
+}
+
+[role="alert"] p + p {
+  margin-top: 4px;
+  color: var(--ink-soft);
+}
+
+.sheets {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 36px 40px;
+  margin-bottom: 36px;
+  padding: 40px 36px 0;
+  border: 16px solid;
+  border-color: #4b5358 #2c3236 #1e2326 #3b4348;
+  border-radius: 10px;
+  /* Three tubes under milky opal glass, softly banded, brightest over the middle one. */
+  background:
+    repeating-linear-gradient(
+      rgb(255 252 244 / 0) 0,
+      rgb(255 252 244 / 0.14) 16.6%,
+      rgb(255 252 244 / 0) 33.3%
+    ),
+    radial-gradient(80% 70% at 50% 50%, #fbfaf5 0 18%, #f0f0ea 58%, var(--glass-edge) 100%);
+  box-shadow:
+    inset 0 0 0 1px var(--steel-edge),
+    inset 0 0 24px rgb(40 60 70 / 0.25),
+    0 0 0 1px #3d4448;
+  color: var(--ink);
+}
+
+/* With WebGL the light table's own shader draws the rail, glass and paper behind the tool. */
+.tool-glass {
+  position: absolute;
+  z-index: -1;
+  inset: -16px;
+  width: calc(100% + 32px);
+  height: calc(100% + 32px);
+  border-radius: 10px;
+  pointer-events: none;
+}
+
+/* The shader covers the table; the plain glass colour under it is what the words sit on. */
+.sheets.lit {
+  background: var(--glass);
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .sheets {
+    transition: grid-template-columns 450ms var(--ease-out);
+  }
+}
+
+/* The dog waiting on the result sheet is drawn by the table's shader; without it the sheet is bare. */
+.sheets:not(.lit) .waiting {
+  visibility: hidden;
+}
+
+.sheets .step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.editing:not([hidden]) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+/* Choosing a photo, flipping, animating and running sit on the table's front rail, which is
+   wide enough here to hold them; each group sits under its own sheet. */
+.rail {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  padding: 18px 0 14px;
+}
+
+.sheets:not(.lit) .rail {
+  margin-inline: -36px;
+  padding-inline: 36px;
+  background: linear-gradient(#5a6267, #3a4146);
+}
+
+.pin-bar,
+.rail-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.rail-bar {
+  grid-column: -2;
+}
+
+.sheets > .drop-zone {
+  position: relative;
+  grid-row: span 2;
+}
+
+.step h3 {
+  margin: 0 0 12px;
+  font: 640 19px/1.2 var(--text);
+}
+
+label[for$="-input"] {
+  margin-top: 2px;
+}
+
+.step input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+/* The label can sit on the rail, away from its input, so the ring follows the input by id. */
+body:has(#drawing-input:focus-visible) label[for="drawing-input"],
+body:has(#clip-input:focus-visible) label[for="clip-input"] {
+  outline: 3px solid var(--grease);
+  outline-offset: 3px;
+}
+
+.step .hint {
+  margin-block: 10px 0;
+  color: var(--ink-soft);
+}
+
+.step [role="status"]:empty {
+  display: none;
+}
+
+.step [role="status"] {
+  margin-block: 10px 0;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.sheets :focus-visible {
+  outline-color: var(--grease);
+}
+
+/* An empty table waits for a photo: a blank sheet lies where the photo will, the button on it. */
+.blank:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(220px, 34vw, 420px);
+  margin: 34px 0;
+  padding: 46px 18px 18px;
+  text-align: center;
+}
+
+.blank > [role="alert"] {
+  text-align: left;
+}
+
+/* The photo lies on the glass as a sheet hung on a peg bar; the joints are pins pushed into it. */
+.blank,
+.editor {
+  position: relative;
+  background: var(--paper);
+  box-shadow: 0 1px 3px rgb(18 21 23 / 0.28);
+}
+
+.blank::before,
+.editor::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -9px;
+  left: 50%;
+  width: min(46%, 240px);
+  height: 18px;
+  translate: -50% 0;
+  border-radius: 3px;
+  background:
+    radial-gradient(circle at 50% 62%, #1d2124 0 4px, transparent 4.5px),
+    radial-gradient(circle at 16% 62%, #1d2124 0 4px, transparent 4.5px),
+    radial-gradient(circle at 84% 62%, #1d2124 0 4px, transparent 4.5px),
+    linear-gradient(#69737a, #353c41);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
+}
+
+.editor {
+  max-height: 70vh;
+  margin: 0;
+}
+
+.sheets.lit .blank,
+.sheets.lit .editor {
+  background: none;
+  box-shadow: none;
+}
+
+.sheets.lit .blank::before,
+.sheets.lit .editor::before {
+  display: none;
+}
+
+/* The photo's own paper drops out against the sheet; only its pencil stays. */
+.sheets.lit .editor img {
+  mix-blend-mode: multiply;
+  filter: brightness(1.1) contrast(1.25);
+}
+
+body:not([data-state="drawingEmpty"], [data-state="drawingFailed"]) .blank > .hint {
+  display: none;
+}
+
+.editing {
+  margin-top: 34px;
+}
+
+.editor img,
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.editor img {
+  object-fit: contain;
+}
+
+.overlay {
+  cursor: crosshair;
+}
+
+/* A map pin's domed plastic head. */
+.dot {
+  fill: url(#pin-head) #d9a520;
+  stroke: var(--ink);
+  stroke-width: 0.2%;
+}
+
+.pin-shadow {
+  opacity: 0.26;
+  pointer-events: none;
+}
+
+.pin-shadow circle {
+  fill: var(--ink);
+  filter: blur(1.5px);
+}
+
+.pin-shadow line {
+  stroke: var(--ink);
+  stroke-width: 0.25%;
+  stroke-linecap: round;
+}
+
+.dot:focus-visible {
+  outline: 3px solid var(--grease);
+  outline-offset: 2px;
+}
+
+.dot.selected {
+  fill: url(#pin-chosen) var(--grease);
+  stroke: var(--paper);
+  stroke-width: 0.5%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dot {
+    animation: pin-in 180ms var(--ease-out) both;
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+}
+
+@keyframes pin-in {
+  from {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+legend {
+  margin-bottom: 8px;
+  padding: 0;
+  font: 600 13px/1.2 var(--text);
+  color: var(--ink-soft);
+}
+
+/* Radios and the checkbox are pin heads: ochre when idle, red when chosen. */
+input[type="radio"],
+input[type="checkbox"] {
+  flex: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  border: 1.5px solid var(--ink);
+  border-radius: 50%;
+  background: #d9a520;
+  box-shadow: 0.5px 1px 1px rgb(18 21 23 / 0.35);
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  border-radius: 3px;
+}
+
+input[type="radio"]:checked,
+input[type="checkbox"]:checked {
+  border-color: var(--grease);
+  background: var(--grease);
+  box-shadow:
+    inset 0 0 0 2.5px var(--glass),
+    0.5px 1px 1px rgb(18 21 23 / 0.35);
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.motion-option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px 10px;
+  font: 600 15px/1.2 var(--text);
+  cursor: pointer;
+}
+
+.thumbnail {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  width: 9rem;
+  height: auto;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-size: 15px;
+}
+
+/* Animate is the same push button as the table's reel. */
+button.animate,
+.sheets .reel {
+  padding: 0 14px 0 8px;
+}
+
+button.animate::before {
+  content: "";
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #c3392b, #7c140c 70%);
+  box-shadow:
+    0 0 0 2px #121415,
+    0 0 0 3px #4d555a;
+  transition: transform 90ms var(--ease-out);
+}
+
+button.animate:active:not(:disabled)::before {
+  transform: scale(0.92);
+}
+
+/* Red is for the one button to press: Animate until there is a result, then Run. */
+button.animate:disabled::before,
+button.animate.used::before {
+  background: radial-gradient(circle at 40% 35%, #8b9296, #4c5357 70%);
+}
+
+/* A slip of paper taped to the rail beside Animate while it waits. */
+.rail-note {
+  margin: 0;
+  padding: 6px 10px;
+  rotate: -0.8deg;
+  background: var(--paper);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.4);
+  color: var(--ink);
+  font: 600 15px/1.25 var(--text);
+}
+
+progress {
+  display: block;
+  width: 100%;
+  height: 6px;
+  margin-top: 14px;
+  accent-color: var(--grease);
+}
+
+.result {
+  align-self: stretch;
+  margin-top: 22px;
+}
+
+.result h4 {
+  margin: 0 0 10px;
+  font: 640 17px/1.2 var(--text);
+}
+
+.result h5 {
+  margin: 14px 0 6px;
+  font: 600 13px/1.2 var(--text);
+  color: var(--ink-soft);
+}
+
+.result video {
+  display: block;
+  width: 100%;
+  mix-blend-mode: multiply;
+}
+
+.timing {
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+
+.downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-weight: 600;
+}
+
+.downloads a {
+  display: inline-block;
+  padding-block: 8px;
+}
+
+details {
+  margin-top: 10px;
+}
+
+summary {
+  padding-block: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* The result is a second sheet on the glass, the dog's clip under it as on the table above. */
+.stage {
+  position: relative;
+  width: 100%;
+  margin-top: 30px;
+  overflow: hidden;
+  background: var(--paper);
+}
+
+.sheets.lit .stage {
+  background: none;
+}
+
+.stage canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  mix-blend-mode: multiply;
+}
+
+.player-controls {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  min-width: 12rem;
+}
+
+/* The scrub is a slot cut in the rail; the grease-pencil thumb rides in it. */
+.player-controls input {
+  flex: 1;
+  height: 44px;
+  margin: 0;
+  appearance: none;
+  background: linear-gradient(#101213, #2a2f33) center / 100% 6px no-repeat;
+  cursor: pointer;
+}
+
+.player-controls input::-webkit-slider-thumb {
+  width: 14px;
+  height: 26px;
+  border: 1px solid #0b0c0d;
+  border-radius: 3px;
+  appearance: none;
+  background: linear-gradient(90deg, #7c140c, #c3392b 45%, #7c140c);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.5);
+}
+
+.player-controls input::-moz-range-thumb {
+  width: 14px;
+  height: 26px;
+  border: 1px solid #0b0c0d;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #7c140c, #c3392b 45%, #7c140c);
+}
+
+.skeleton-view {
+  position: relative;
+}
+
+.skeleton-view video {
+  display: block;
+  width: 100%;
+}
+
+.skeleton line {
+  stroke: var(--grease);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.skeleton {
+  pointer-events: none;
+}
+
+footer {
+  width: min(1176px, 100% - 64px);
+  margin: 0 auto;
+  padding: 24px 0 48px;
+  border-top: 1px solid #34383c;
+  font-size: 13px;
+  color: var(--room-soft);
+}
+
+footer p {
+  max-width: 70rem;
+  margin: 0 0 6px;
+}
+
+@media (max-width: 1000px) {
+  .table {
+    align-items: stretch;
+    gap: 22px;
+    padding: 36px 16px 28px;
+  }
+
+  .intro,
+  .bench,
+  .under {
+    width: auto;
+  }
+
+  .intro {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .bench {
+    display: contents;
+  }
+
+  .desk {
+    width: auto;
+    padding: 44px 24px 82px;
+  }
+
+  .paper {
+    padding: 30px 10px 14px;
+  }
+
+  .rail-controls {
+    left: 20px;
+  }
+
+  .under {
+    order: 1;
+    justify-content: flex-start;
+    padding: 14px 0 0;
+  }
+
+  .xsheet {
+    order: 2;
+    width: auto;
+    rotate: none;
+  }
+
+  .xsheet tbody tr {
+    height: 6px;
+  }
+
+  .run {
+    width: auto;
+    padding: 56px 16px 0;
+  }
+
+  #trace {
+    padding: 64px 16px 32px;
+  }
+
+  .sheets {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 34px 16px 0;
+  }
+
+  /* Stacked, the rail holds two rows: the photo's controls, then Animate and a full-width scrub. */
+  .rail {
+    row-gap: 12px;
+  }
+
+  .sheets:not(.lit) .rail {
+    margin-inline: -16px;
+    padding-inline: 16px;
+  }
+
+  /* On a phone the rail's plates stand in one two-column grid, the scrub across the bottom. */
+  .rail {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .rail-bar,
+  .pin-bar:not([hidden]),
+  .rail .player-controls {
+    display: contents;
+  }
+
+  .rail button,
+  .rail label[for$="-input"] {
+    justify-content: center;
+    margin: 0;
+    text-align: center;
+  }
+
+  .rail .player-controls input {
+    grid-column: 1 / -1;
+  }
+
+  /* The scrub gets a row of its own under Run, as wide as the rail. */
+  .player-controls {
+    flex-wrap: wrap;
+    flex-basis: 100%;
+  }
+
+  .player-controls input {
+    flex-basis: 100%;
+  }
+
+  .editing {
+    margin-top: 44px;
+  }
+
+  .sheets > .drop-zone {
+    grid-row: auto;
+  }
+
+  footer {
+    width: calc(100% - 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    animation-duration: 0s !important;
+  }
+}

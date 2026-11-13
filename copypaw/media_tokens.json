@@ -1,0 +1,9 @@
+{
+  "ground": "#FFFFFF",
+  "strip": {
+    "background": "#F2F2F2",
+    "mark": "#404040",
+    "highlight": "#A6A6A6"
+  },
+  "credit_text": "#404040"
+}

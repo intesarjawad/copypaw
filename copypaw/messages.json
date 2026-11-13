@@ -1,0 +1,110 @@
+{
+  "internal": {
+    "what": "Copypaw hit a bug it did not expect.",
+    "next": "Run `copypaw doctor` and open an issue with its output: https://github.com/intesarjawad/copypaw/issues/new?template=bug.yml"
+  },
+  "video_open": {
+    "what": "Copypaw could not open the video {path}.",
+    "next": "Re-export the clip as an H.264 MP4, then run `copypaw capture clip.mp4 --out out`."
+  },
+  "video_frame_rate": {
+    "what": "Copypaw could not read the frame rate of {path}.",
+    "next": "Re-export the clip as an H.264 MP4, then run `copypaw capture clip.mp4 --out out`."
+  },
+  "video_timestamps": {
+    "what": "The frame times in {path} are invalid or not in increasing order.",
+    "next": "Re-export the clip as an H.264 MP4 with a constant frame rate, then run `copypaw capture clip.mp4 --out out`."
+  },
+  "video_no_frames": {
+    "what": "Copypaw decoded no frames from {path}.",
+    "next": "Check that the clip plays and is not empty, then run `copypaw capture clip.mp4 --out out`."
+  },
+  "video_decode": {
+    "what": "Copypaw could not decode {path}: {reason}",
+    "next": "Re-export the clip as an H.264 MP4, then run `copypaw capture clip.mp4 --out out`."
+  },
+  "no_animal_found": {
+    "what": "Copypaw found an animal in fewer than half the frames of the clip.",
+    "next": "Film the pet from the side so it stays in view, then run `copypaw capture clip.mp4 --out out`."
+  },
+  "model_checksum": {
+    "what": "The model file {filename} does not match its pinned checksum: expected SHA-256 {expected}, actual {actual}.",
+    "next": "Delete {filename} from the model cache if it is there, then run `copypaw models fetch`."
+  },
+  "model_size": {
+    "what": "The model file {filename} has {actual} bytes; expected {expected} bytes.",
+    "next": "Delete {filename} from the model cache if it is there, then run `copypaw models fetch`."
+  },
+  "model_download": {
+    "what": "Copypaw could not download {filename}: {reason}",
+    "next": "Check your network connection, then run `copypaw models fetch`."
+  },
+  "model_cache": {
+    "what": "Copypaw cannot write to the model cache {path}: {reason}",
+    "next": "Point the cache at a folder you can write to with `COPYPAW_CACHE=~/copypaw-models copypaw models fetch`."
+  },
+  "output_directory": {
+    "what": "Copypaw cannot write to the output folder {path}: {reason}",
+    "next": "Run the command again with `--out` set to a folder you can write to."
+  },
+  "mask_too_small": {
+    "what": "The drawing covers too little of the page.",
+    "next": "Draw a larger pet on a plain, light background. Examples: https://github.com/intesarjawad/copypaw/tree/main/samples/worst_case"
+  },
+  "mask_too_large": {
+    "what": "The drawing covers too much of the page.",
+    "next": "Leave a clear margin between the pet and the page edge. Examples: https://github.com/intesarjawad/copypaw/tree/main/samples/worst_case"
+  },
+  "mask_multiple_creatures": {
+    "what": "The page contains more than one drawing.",
+    "next": "Show one pet per page. Examples: https://github.com/intesarjawad/copypaw/tree/main/samples/worst_case"
+  },
+  "motion_unreadable": {
+    "what": "Copypaw could not read {path} as a motion file.",
+    "next": "Create a fresh motion file with `copypaw capture clip.mp4 --out out`."
+  },
+  "motion_missing_key": {
+    "what": "The motion file is missing the key {key}.",
+    "next": "Create a fresh motion file with `copypaw capture clip.mp4 --out out`."
+  },
+  "motion_version": {
+    "what": "The motion file is version {found}; Copypaw reads version {expected}.",
+    "next": "Create a fresh motion file with `copypaw capture clip.mp4 --out out`."
+  },
+  "motion_invalid": {
+    "what": "The motion file key {key} is invalid: {problem}.",
+    "next": "Create a fresh motion file with `copypaw capture clip.mp4 --out out`."
+  },
+  "drawing_unreadable": {
+    "what": "Copypaw could not read {path} as an image.",
+    "next": "Save the drawing as a PNG or JPEG, then run `copypaw rig drawing.png -o rig`."
+  },
+  "joints_invalid": {
+    "what": "The joints file {path} is not usable: {problem}.",
+    "next": "Write a fresh one with `copypaw rig drawing.png -o rig`, edit the numbers it prints, then pass the file with `--joints`."
+  },
+  "character_missing": {
+    "what": "{path} is not a rigged drawing: {name} is missing.",
+    "next": "Rig the drawing with `copypaw rig drawing.png -o rig`, then run `copypaw animate rig motion.npz --clip clip.mp4 -o out`."
+  },
+  "app_static_missing": {
+    "what": "The local app has no built web page in {path}.",
+    "next": "Build it with `cd web && npm ci && npm run build`, then run `copypaw app`."
+  },
+  "app_port": {
+    "what": "Copypaw cannot listen on port {port}: {reason}",
+    "next": "Run `copypaw app` without `--port` to use a free port."
+  },
+  "app_body_too_large": {
+    "what": "The file is larger than the {limit_mb} MB Copypaw accepts.",
+    "next": "Trim the clip to a few seconds or use a smaller photo, then pick it again with Choose a clip or Choose a photo."
+  },
+  "app_request": {
+    "what": "The page sent a request Copypaw cannot use: {problem}.",
+    "next": "Reload the address `copypaw app` printed and start again."
+  },
+  "capture_anatomy": {
+    "what": "Copypaw could not track the required anatomy. {problem}",
+    "next": "Film again from the side with the whole pet visible, including all four paws. Follow https://github.com/intesarjawad/copypaw/blob/main/docs/filming_guide.md"
+  }
+}

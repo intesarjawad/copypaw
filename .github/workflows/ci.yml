@@ -1,0 +1,90 @@
+name: ci
+on: [push, pull_request]
+permissions: { contents: read }
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.12", "3.13", "3.14"]
+    env:
+      UV_PYTHON: ${{ matrix.python }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { fetch-depth: 0 }
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with: { version: "0.13.7" }
+      - run: uv python install ${{ matrix.python }} && uv sync --all-groups --locked
+      - run: uv run python -c "import sys; assert sys.version.startswith('${{ matrix.python }}'), sys.version"
+      - run: uv run ruff format --check . && uv run ruff check . && uv run --with hatchling==1.33.0 pyright
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: "24" }
+      - run: uv run pytest -m "not slow and not render and not ui"
+      - if: matrix.python == '3.12'
+        run: uv run python scripts/copy_lint.py README.md docs copypaw/messages.json
+      - name: gitleaks
+        if: matrix.python == '3.12'
+        run: |
+          curl -fsSL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz | tar xz gitleaks
+          ./gitleaks git --redact -v
+  render-linux:
+    runs-on: ubuntu-latest
+    env:
+      UV_PYTHON: "3.12"
+      PYOPENGL_PLATFORM: osmesa
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { fetch-depth: 0 }
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with: { version: "0.13.7" }
+      - run: sudo apt-get update && sudo apt-get install -y libosmesa6 libosmesa6-dev libglu1-mesa
+      - run: uv python install 3.12 && uv sync --all-groups --locked
+      - run: uv run pytest -m render
+      - name: Diagnose a failed render
+        if: failure()
+        run: |
+          echo "::group::1. import OpenGL.osmesa"
+          uv run python -c 'from OpenGL import osmesa; print("osmesa import: OK")' || true
+          echo "::endgroup::"
+          echo "::group::2. vendored mesa_view in isolation"
+          uv run pytest -x -s -m render tests/integration/test_vendor_render.py || true
+          echo "::endgroup::"
+          echo "::group::3. Mesa from the default apt sources"
+          apt-cache policy libosmesa6 libosmesa6-dev libglu1-mesa
+          dpkg -l | grep -i -E 'mesa|libglu' || true
+          echo "::endgroup::"
+  macos:
+    # arm64, like the Mac that writes the goldens. Render tests stay on OSMesa:
+    # GitHub's macOS runners have no reliable OpenGL context.
+    runs-on: macos-latest
+    env:
+      UV_PYTHON: "3.12"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { fetch-depth: 0 }
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with: { version: "0.13.7" }
+      - run: uv python install 3.12 && uv sync --all-groups --locked
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/copypaw/models
+          key: models-balanced-${{ hashFiles('copypaw/models.py') }}
+      - run: uv run copypaw models fetch --mode balanced
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: "24" }
+      - run: uv run pytest -m "not render and not ui"
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with: { node-version: "24" }
+      - run: npm ci
+      - run: npm run lint && npm run build && npm test -- --maxWorkers=1 --testTimeout=120000 --retry=1
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: xvfb-run -a npm run e2e -- --workers=1
+        env:
+          FIREFOX_HEADED: "1"

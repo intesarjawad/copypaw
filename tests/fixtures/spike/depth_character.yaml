@@ -1,0 +1,19 @@
+width: 256
+height: 256
+skeleton:
+  - {name: root, parent: null, loc: [136, 80]}
+  - {name: hip, parent: root, loc: [86, 80]}
+  - {name: torso, parent: hip, loc: [190, 80]}
+  - {name: neck, parent: torso, loc: [220, 48]}
+  - {name: right_hip_b, parent: root, loc: [86, 96]}
+  - {name: right_knee_b, parent: right_hip_b, loc: [104, 148]}
+  - {name: right_foot_b, parent: right_knee_b, loc: [122, 204]}
+  - {name: left_hip_b, parent: root, loc: [86, 96]}
+  - {name: left_knee_b, parent: left_hip_b, loc: [68, 148]}
+  - {name: left_foot_b, parent: left_knee_b, loc: [50, 204]}
+  - {name: right_hip_f, parent: root, loc: [190, 96]}
+  - {name: right_knee_f, parent: right_hip_f, loc: [208, 148]}
+  - {name: right_foot_f, parent: right_knee_f, loc: [226, 204]}
+  - {name: left_hip_f, parent: root, loc: [190, 96]}
+  - {name: left_knee_f, parent: left_hip_f, loc: [172, 148]}
+  - {name: left_foot_f, parent: left_knee_f, loc: [154, 204]}

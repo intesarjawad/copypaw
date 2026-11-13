@@ -1,0 +1,15 @@
+name: Feature request
+description: Describe a use case and the behavior that would help.
+body:
+  - type: textarea
+    id: use-case
+    attributes:
+      label: Use case
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed behavior
+    validations:
+      required: true

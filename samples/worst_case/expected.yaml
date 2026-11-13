@@ -1,0 +1,67 @@
+# Recorded segmenter outcome for each generated page.
+# An ok page records the accepted coverage range of its mask.
+# A failing page records the MaskError kind the segmenter must raise.
+plain.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+lined_paper.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+graph_paper.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+coloured_paper.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+phone_shadow_gradient.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+perspective_skew.png:
+  outcome: ok
+  coverage: [0.11, 0.15]
+glare_blob.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+faint_pencil.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+edge_touching.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+two_creatures.png:
+  outcome: multiple_creatures
+stick_legs.png:
+  outcome: ok
+  coverage: [0.11, 0.13]
+  legs: 4
+  fallback: false
+two_legs.png:
+  outcome: ok
+  coverage: [0.09, 0.13]
+  legs: 2
+  fallback: false
+four_legs_row.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+  legs: 4
+  fallback: false
+tail_on_ground.png:
+  outcome: ok
+  coverage: [0.13, 0.18]
+  legs: 4
+  fallback: false
+long_neck.png:
+  outcome: ok
+  coverage: [0.13, 0.18]
+  legs: 4
+  fallback: false
+short_legs.png:
+  outcome: ok
+  coverage: [0.07, 0.11]
+  legs: 4
+  fallback: true
+scribble_body.png:
+  outcome: ok
+  coverage: [0.12, 0.16]
+  legs: 4
+  fallback: false

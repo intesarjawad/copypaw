@@ -1,0 +1,1 @@
+# Launch motions: the contact-threshold sweep set, one folder name per line.

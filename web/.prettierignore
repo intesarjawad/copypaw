@@ -1,0 +1,6 @@
+playwright-report
+test-results
+screenshots
+src/compute/parity.fixture.json
+src/gallery
+src/lightTable/sheet.json
