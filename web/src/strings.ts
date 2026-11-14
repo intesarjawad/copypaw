@@ -69,8 +69,6 @@ export const STRINGS = {
 /** The light table: the clip under the paper, the drawing on top, footfall.json beside them. */
 export const TABLE = {
   mark: "Copypaw",
-  repoUrl: "https://github.com/intesarjawad/copypaw",
-  repoLink: "Star on GitHub",
   headline: "Your dog walks under the paper. The drawing walks on top.",
   lede: "A real clip of a dog shows through the paper in blue. On top, a drawing moves with the dog\u2019s tracked joints.",
   pointer: ["", "Animate your own drawing", " below, or run Copypaw on a clip of your dog."],
