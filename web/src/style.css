@@ -176,6 +176,33 @@ button:disabled {
   text-transform: uppercase;
 }
 
+.repo {
+  position: absolute;
+  top: -3px;
+  right: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-width: 24px;
+  min-height: 24px;
+  justify-content: center;
+  font-size: 15.5px;
+  line-height: 1;
+  color: var(--room-soft);
+  text-decoration: none;
+}
+
+.repo:hover {
+  color: var(--room-ink);
+}
+
+@media (max-width: 339px) {
+  .repo span {
+    display: none;
+  }
+}
+
 h1 {
   margin: 14px 0 0;
   font: 640 clamp(30px, 2.7vw, 40px) / 1.04 var(--text);
