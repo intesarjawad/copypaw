@@ -9,11 +9,11 @@ license-files = ["LICENSE", "NOTICE"]
 requires-python = ">=3.12,<3.15"
 dependencies = [
     "glfw==2.11.0",
-    "imageio==2.38.1",
+    "imageio==2.38.2",
     "imageio-ffmpeg==0.8.1",
-    "numpy==2.5.4",
-    "onnxruntime==1.31.1",
-    "opencv-python-headless==5.0.0.93",
+    "numpy==2.5.5",
+    "onnxruntime==1.32.0",
+    "opencv-python-headless==5.1.0.95",
     "pillow==13.0.0",
     "PyOpenGL==3.1.10",
     "PyYAML==6.0.3",
@@ -22,7 +22,7 @@ dependencies = [
     "scipy==1.18.1",
     "shapely==2.2.0",
     "tqdm==4.70.1",
-    "typer==0.29.0",
+    "typer==0.29.1",
 ]
 
 [project.scripts]
@@ -32,12 +32,12 @@ copypaw = "copypaw.cli:main"
 dev = [
     "axe-playwright-python==0.1.8",
     "hypothesis==6.170.15",
-    "playwright==1.65.0",
+    "playwright==1.65.2",
     "pre-commit==4.7.0",
     "pyright==1.1.414",
     "pytest==9.2.0",
     "pytest-cov==7.1.0",
-    "ruff==0.17.4",
+    "ruff==0.17.5",
     "scipy-stubs==1.18.1.1",
     "types-PyYAML==6.0.12.20261103",
 ]
